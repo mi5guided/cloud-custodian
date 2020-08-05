@@ -1,14 +1,13 @@
 #!/bin/bash
 
-# get credentials from ~/.aws/config file
-FILELINE=`cat $HOME/.aws/config | grep aws_access_key_id`
+# get credentials from ~/.aws/config file; grab the first one
+FILELINE=`grep -m 1 aws_access_key_id $HOME/.aws/config`
 ACCESS_KEY=`cut -d ' ' -f3 <<< $FILELINE`
 
-FILELINE=`cat $HOME/.aws/config | grep aws_secret_access_key`
+FILELINE=`grep -m 1 aws_secret_access_key $HOME/.aws/config`
 SECRET_ACCESS_KEY=`cut -d ' ' -f3 <<< $FILELINE`
 
-
-docker run -it \
+docker run --rm \
   -v $(pwd)/output:/home/custodian/output \
   -v $(pwd)/policy.yml:/home/custodian/policy.yml \
   --env-file <(env | grep "^AWS\|^AZURE\|^GOOGLE") \
