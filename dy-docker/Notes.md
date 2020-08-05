@@ -20,3 +20,6 @@ where
 https://cloudcustodian.io/docs/
 
 https://cloudcustodian.io/docs/quickstart/index.html
+
+AWS reference:<br>
+https://cloudcustodian.io/docs/aws/resources/index.html
