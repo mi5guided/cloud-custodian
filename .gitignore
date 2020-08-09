@@ -22,7 +22,6 @@ tmp/
 docs/source/generated/
 docs/build/
 cache/
-policies/
 local/
 *~
 share/

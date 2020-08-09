@@ -1,0 +1,50 @@
+policies:
+  - name: enforce-ec2-tag-name
+    description: |
+      Enforce ec2s missing name tag in all regions
+    resource: ec2
+    filters:
+      - or:
+          - "tag:Name": absent
+    actions:
+      - type: tag
+        key: "Name"
+        value: "Please-Name-this-ec2"
+
+  - name: enforce-ec2-tag-owner
+    description: |
+      Enforce ec2s missing owner tag in all regions
+    resource: ec2
+    filters:
+      - or:
+          - "tag:Owner": absent
+    actions:
+      - type: tag
+        key: "Owner"
+        value: "Please-Assign-Owner-to-this-ec2"
+
+  - name: enforce-ec2-tag-costcenter
+    description: |
+      Enforce ec2s missing cost center tag in all regions
+    resource: ec2
+    filters:
+      - or:
+          - "tag:CostCenter": absent
+    actions:
+      - type: tag
+        key: "CostCenter"
+        value: "Please-Assign-Cost-Center-to-this-ec2"
+
+  - name: enforce-ec2-tag-project
+    description: |
+      Enforce ec2s missing project tag in all regions
+    resource: ec2
+    filters:
+      - or:
+          - "tag:Project": absent
+    actions:
+      - type: tag
+        key: "Project"
+        value: "Please-Assign-Project-to-this-ec2"
+
+        

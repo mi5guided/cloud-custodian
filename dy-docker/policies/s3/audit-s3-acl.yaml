@@ -1,0 +1,25 @@
+policies:
+  # - name: s3-tag-missing
+  #   description: |
+  #     Report S3 buckets missing tags
+  #   resource: s3
+  #   region: us-east-1
+  #   filters:
+  #     - or:
+  #         - "tag:Owner": absent
+  #         - "tag:CostCenter": absent
+  #         - "tag:Project": absent
+
+  - name: open-security-group
+    description: |
+      Report open security group
+    resource: security-group
+    region: us-east-1
+    filters:
+      - type: ingress
+        Ports: [22]
+        Cidr:
+          value:
+            - "0.0.0.0/0"
+            - "::/0"
+          op: in

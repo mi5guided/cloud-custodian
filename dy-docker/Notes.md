@@ -1,5 +1,9 @@
 # Notes on running Cloud-Custodian from Docker Hub
-## Launching container
+## Mode specified in a policy - default is pull
+Other interesting modes are *cloudtrail*, *guard-duty*, and *config*
+    https://tgibsonblobo.blob.core.windows.net/cloudcustodiandocs/html/aws/aws-modes.html
+
+## Launching container (pull mode)
     $ docker pull cloudcustodian/c7n
     $ docker images  # should see cloudcustodian/c7n
     $ docker run -it \
@@ -23,3 +27,12 @@ https://cloudcustodian.io/docs/quickstart/index.html
 
 AWS reference:<br>
 https://cloudcustodian.io/docs/aws/resources/index.html
+
+to scan multiple accounts, maybe we can scan the aws config file
+    $ grep -e aws_[sa][ec]c[re][es][ts] -e profile ~/.aws/config
+
+Filename of Policies: <action>-<service>-<attr>.yml
+Actions:
+  - audit: just report anamalies
+  - notify: report with intend to enforce later if not remediated
+  - enforce: make changes immediately
