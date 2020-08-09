@@ -4,8 +4,7 @@ policies:
       Enforce ec2s missing name tag in all regions
     resource: ec2
     filters:
-      - or:
-          - "tag:Name": absent
+      - "tag:Name": absent
     actions:
       - type: tag
         key: "Name"
@@ -16,8 +15,7 @@ policies:
       Enforce ec2s missing owner tag in all regions
     resource: ec2
     filters:
-      - or:
-          - "tag:Owner": absent
+      - "tag:Owner": absent
     actions:
       - type: tag
         key: "Owner"
@@ -28,8 +26,7 @@ policies:
       Enforce ec2s missing cost center tag in all regions
     resource: ec2
     filters:
-      - or:
-          - "tag:CostCenter": absent
+      - "tag:CostCenter": absent
     actions:
       - type: tag
         key: "CostCenter"
@@ -40,8 +37,7 @@ policies:
       Enforce ec2s missing project tag in all regions
     resource: ec2
     filters:
-      - or:
-          - "tag:Project": absent
+      - "tag:Project": absent
     actions:
       - type: tag
         key: "Project"

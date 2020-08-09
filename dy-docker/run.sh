@@ -9,11 +9,11 @@ SECRET_ACCESS_KEY=`cut -d ' ' -f3 <<< $FILELINE`
 
 docker run --rm \
   -v $(pwd)/output:/home/custodian/output \
-  -v $(pwd)/policy.yml:/home/custodian/policy.yml \
+  -v $(pwd)/policies/ec2/enforce-ec2-tags.yaml:/home/custodian/policy.yaml \
   --env-file <(env | grep "^AWS\|^AZURE\|^GOOGLE") \
   -e AWS_ACCESS_KEY_ID=$ACCESS_KEY -e AWS_SECRET_ACCESS_KEY=$SECRET_ACCESS_KEY \
   -e AWS_DEFAULT_REGION=us-east-1 \
-  cloudcustodian/c7n report --region all -v -s /home/custodian/output /home/custodian/policy.yml
+  cloudcustodian/c7n run --region all -v -s /home/custodian/output /home/custodian/policy.yaml
 
 # if scanning only 1 region, you'll need to use keys
   # -e AWS_DEFAULT_REGION=us-east-1 \
