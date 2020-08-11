@@ -1,0 +1,26 @@
+policies:
+- name: iam-attach-policy
+  resource: iam-role
+  description: |
+      Attach the default deny policy to any new role created in the account
+  mode:
+      type: cloudtrail
+      role: arn:aws:iam::{account_id}:role/AWS_DEFAULT_LAMBDA_EXECUTION_ROLE
+      events:
+        - source: iam.amazonaws.com
+          event:  CreateRole
+          ids: "requestParameters.roleName"
+  filters:
+  - and:
+     - type: event
+       key: "detail.userIdentity.arn"
+       value_type: swap
+       op: ne
+       value: "arn:aws:sts::{account_id}:assumed-role/OrganizationAccountAccessRole/Terraform"
+  - and:
+     - type: no-specific-managed-policy
+       value: AWS_DEFAULT_DENY_POLICY
+  actions:
+    - type: set-policy
+      state: attached
+      arn: arn:aws:iam::{account_id}:policy/AWS_DEFAULT_DENY_POLICY

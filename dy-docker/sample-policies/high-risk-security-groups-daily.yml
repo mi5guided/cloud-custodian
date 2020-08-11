@@ -1,0 +1,22 @@
+policies:
+  - name: high-risk-security-groups-daily
+    resource: security-group
+    description: |
+      Remove any rule from a security group that allows 0.0.0.0/0 or ::/0 (IPv6) ingress
+      and notify the user  who added the violating rule.
+    mode:
+        type: periodic
+        schedule: "rate(12 hours)"
+        role: arn:aws:iam::{account_id}:role/AWS_DEFAULT_LAMBDA_EXECUTION_ROLE
+    filters:
+      - "tag:sg-opt-out": absent
+      - or:
+            - type: ingress
+              Cidr:
+                value: "0.0.0.0/0"
+            - type: ingress
+              CidrV6:
+                value: "::/0"
+    actions:
+        - type: remove-permissions
+          ingress: matched

@@ -1,0 +1,15 @@
+policies:
+  - name: audit-s3-encrypt
+    description: |
+      Audit s3 bucket for encryption enabled
+    resource: s3
+    filters:
+      - type: bucket-encryption
+        state: False
+    # actions:
+    #   - type: set-bucket-encryption
+    #     enabled: True
+
+### To convert from just reporting this errant state and actively enforce 
+###   encryptiong on every bucket, uncomment the action lines and rename
+###   policy to enforce-s3-encrypt

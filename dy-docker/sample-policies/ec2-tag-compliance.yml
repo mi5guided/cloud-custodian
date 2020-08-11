@@ -1,0 +1,55 @@
+policies:
+
+- name: ec2-tag-compliance-mark
+  resource: ec2
+  description: |
+    Find all instances that are not conformant
+    to tagging policies, and tag them for stoppage in 1 days.
+  mode:
+      type: periodic
+      schedule: "rate(12 hours)"
+      role: arn:aws:iam::{account_id}:role/AWS_DEFAULT_LAMBDA_EXECUTION_ROLE
+  filters:
+  - "State.Name": running
+  - or:
+    - "tag:wid": absent
+    - "tag:group": absent
+    - "tag:function": absent
+    - "tag:workgroup": absent
+    - not:
+      - type: value
+        key: "tag:group"
+        op: regex
+        value: ^[a-zA-Z]{3}-[0-9]{4}$
+      - type: value
+        key: "tag:wid"
+        op: regex
+        value: ^[a-zA-Z]{3}$
+  actions:
+    - type: mark-for-op
+      op: stop
+      days: 1
+
+- name: ec2-tag-compliance-unmark
+  resource: ec2
+  description: |
+    Any instances which have previously been marked as
+    non compliant with tag policies, that are now compliant
+    should be unmarked as non-compliant.
+  mode:
+      type: periodic
+      schedule: "rate(12 hours)"
+      role: arn:aws:iam::{account_id}:role/AWS_DEFAULT_LAMBDA_EXECUTION_ROLE
+  filters:
+    - type: value
+      key: "tag:group"
+      op: regex
+      value: ^[a-zA-Z]{3}-[0-9]{4}$
+    - type: value
+      key: "tag:wid"
+      op: regex
+      value: ^[a-zA-Z]{3}$
+    - "tag:project": not-null
+  actions:
+    - unmark
+    - start
